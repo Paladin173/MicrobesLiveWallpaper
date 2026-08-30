@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.service.wallpaper.WallpaperService;
@@ -25,6 +27,7 @@ public final class MicrobesWallpaperService extends WallpaperService {
         private final Handler handler = new Handler();
         private final Random random = new Random(0x4D4943524FL);
         private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final Paint glowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final List<Microbe> microbes = new ArrayList<>();
         private final Runnable drawTask = this::drawFrame;
         private boolean visible;
@@ -88,7 +91,8 @@ public final class MicrobesWallpaperService extends WallpaperService {
                 long now = SystemClock.uptimeMillis();
                 float dt = lastFrame == 0 ? 0.016f : Math.min(0.05f, (now - lastFrame) / 1000f);
                 lastFrame = now;
-                canvas.drawColor(Color.rgb(5, 8, 24));
+                canvas.drawColor(Color.BLACK);
+                drawAtmosphere(canvas);
                 paint.setStyle(Paint.Style.FILL);
                 for (Microbe microbe : microbes) {
                     microbe.update(dt);
@@ -98,6 +102,19 @@ public final class MicrobesWallpaperService extends WallpaperService {
                 if (canvas != null) holder.unlockCanvasAndPost(canvas);
             }
             if (visible) handler.postDelayed(drawTask, 33L);
+        }
+
+        private void drawAtmosphere(Canvas canvas) {
+            float[] centers = {0.18f, 0.55f, 0.88f};
+            float[] heights = {0.18f, 0.78f, 0.42f};
+            for (int i = 0; i < centers.length; i++) {
+                float radius = Math.max(width, height) * 0.42f;
+                glowPaint.setShader(new RadialGradient(
+                        centers[i] * width, heights[i] * height, radius,
+                        Color.argb(48, 18, 36, 130), Color.TRANSPARENT, Shader.TileMode.CLAMP));
+                canvas.drawCircle(centers[i] * width, heights[i] * height, radius, glowPaint);
+            }
+            glowPaint.setShader(null);
         }
     }
 
@@ -113,7 +130,11 @@ public final class MicrobesWallpaperService extends WallpaperService {
             phase = random.nextFloat() * 6.28f;
             speed = 0.015f + random.nextFloat() * 0.035f;
             size = 7f + random.nextFloat() * 15f;
-            color = Color.rgb(120 + random.nextInt(100), 180 + random.nextInt(70), 220 + random.nextInt(35));
+            int[] palette = {
+                    Color.rgb(255, 70, 70), Color.rgb(255, 205, 45),
+                    Color.rgb(40, 220, 135), Color.rgb(55, 125, 255)
+            };
+            color = palette[random.nextInt(palette.length)];
         }
 
         void update(float dt) {
@@ -134,13 +155,23 @@ public final class MicrobesWallpaperService extends WallpaperService {
             float x = (position.x - (xOffset - 0.5f) * 0.25f) * width;
             float y = position.y * height;
             float pulse = 1f + 0.18f * (float) Math.sin(phase * 2f);
+            float radius = size * pulse;
+            paint.setShader(new RadialGradient(x, y, radius * 2.8f,
+                    Color.argb(115, Color.red(color), Color.green(color), Color.blue(color)),
+                    Color.TRANSPARENT, Shader.TileMode.CLAMP));
+            canvas.drawCircle(x, y, radius * 2.8f, paint);
+            paint.setShader(null);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(Math.max(1.5f, radius * 0.16f));
             paint.setColor(color);
-            paint.setAlpha(190);
-            canvas.drawCircle(x, y, size * pulse, paint);
+            paint.setAlpha(235);
+            canvas.drawCircle(x, y, radius, paint);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAlpha(245);
+            canvas.drawCircle(x, y, Math.max(1.5f, radius * 0.18f), paint);
             paint.setColor(Color.WHITE);
-            paint.setAlpha(210);
-            canvas.drawCircle(x - size * 0.25f, y - size * 0.25f, size * 0.18f, paint);
+            paint.setAlpha(220);
+            canvas.drawCircle(x - radius * 0.3f, y - radius * 0.3f, Math.max(1f, radius * 0.1f), paint);
         }
     }
 }
-
