@@ -4,7 +4,7 @@ Modern rebuild of the legacy Microbes live wallpaper for Android 16 and foldable
 
 ## Current status
 
-The repository contains a pure-Java animated wallpaper baseline. It intentionally has no native libraries, which avoids the original APK's ARM32-only and 4 KB ELF-page constraints. The original wallpaper thumbnail and launcher artwork are preserved in `app/src/main/res/drawable-nodpi/`, and the renderer now follows the original black/blue atmosphere, neon color palette, glowing halos, and ring-like microbe forms. Fold-specific behavior and final visual fidelity remain to be tested and refined on hardware.
+The repository contains a Java-hosted OpenGL ES 2.0 renderer. It intentionally has no native libraries, which avoids the original APK's ARM32-only and 4 KB ELF-page constraints. The original wallpaper thumbnail and launcher artwork are preserved in `app/src/main/res/drawable-nodpi/`, and the renderer follows the original black/blue atmosphere, neon color palette, shader-based halos, and ring-like microbe forms. Fold-specific behavior and final visual fidelity remain to be tested and refined on hardware.
 
 ## Build
 
