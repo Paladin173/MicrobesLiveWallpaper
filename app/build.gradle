@@ -10,8 +10,7 @@ android {
         applicationId "com.paladin173.microbes"
         minSdk 23
         targetSdk 36
-        versionCode 1
-        versionName "0.1.0"
+        versionCode 3
+        versionName "0.1.2"
     }
 }
-
