@@ -1,0 +1,21 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="Microbes Live Wallpaper"
+        android:theme="@style/AppTheme"
+        android:allowBackup="false"
+        android:supportsRtl="true">
+        <service
+            android:name=".MicrobesWallpaperService"
+            android:label="Microbes Live Wallpaper"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/microbes_wallpaper" />
+        </service>
+    </application>
+</manifest>
+
