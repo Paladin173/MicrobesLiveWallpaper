@@ -4,13 +4,17 @@ plugins {
 
 android {
     namespace "com.paladin173.microbes"
-    compileSdk 36
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.paladin173.microbes"
         minSdk 23
-        targetSdk 36
-        versionCode 3
-        versionName "0.1.2"
+        targetSdk 37
+        versionCode 20
+        versionName "0.6.4"
     }
+}
+
+dependencies {
+    testImplementation "junit:junit:4.13.2"
 }

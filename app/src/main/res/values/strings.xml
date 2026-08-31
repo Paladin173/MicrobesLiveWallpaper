@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Microbes Live Wallpaper</string>
     <string name="wallpaper_description">Animated microbes under the microscope</string>
+    <string name="set_wallpaper">Set live wallpaper</string>
+    <string name="settings">Settings</string>
+    <string name="movement_speed">Movement speed</string>
+    <string name="lifecycle_speed">Lifecycle speed</string>
+    <string name="background_fog">Background fog</string>
+    <string name="percentage_setting">%1$s: %2$d%%</string>
+    <string name="updates_on_github">Updates on GitHub</string>
+    <string name="project_url" translatable="false">https://github.com/Paladin173/MicrobesLiveWallpaper</string>
+    <string name="no_browser_available">No web browser is available</string>
 </resources>
-

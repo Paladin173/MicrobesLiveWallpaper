@@ -1,21 +1,23 @@
 # Microbes Live Wallpaper
 
-Modern rebuild of the legacy Microbes live wallpaper for Android 16 and foldable devices such as the Galaxy Z Fold7.
+Modern rebuild of the legacy Microbes live wallpaper for current Android and foldable devices such as the Galaxy Z Fold7.
 
 ## Current status
 
-The repository contains a Java-hosted OpenGL ES 2.0 renderer. It intentionally has no native libraries, which avoids the original APK's ARM32-only and 4 KB ELF-page constraints. The original wallpaper thumbnail and launcher artwork are preserved in `app/src/main/res/drawable-nodpi/`, and the renderer follows the original black/blue atmosphere, neon color palette, shader-based halos, and ring-like microbe forms. Fold-specific behavior and final visual fidelity remain to be tested and refined on hardware.
+Version 0.6.4 runs the same Java-hosted OpenGL ES 2.0 renderer in both a launcher activity and the live wallpaper service. The activity appears in the app drawer, provides an interactive preview and settings, and opens Android's live-wallpaper preview.
+
+Taps deposit food, drags attract microbes, and microbes wander, avoid one another, consume food, grow while well-fed, split into small offspring, and leave sinking remains when they die. The GPU draws separate decoration, corpse, food, and living-microbe layers using the original APK's decoded four-type palette, size hierarchy, energy-dependent shape, food scale, and fog scale. Movement and lifecycle speeds are configurable, and the background fog can be disabled.
 
 ## Build
 
-Open this project in Android Studio with Android SDK Platform 36 installed, or run:
+Open this project in Android Studio with Android SDK Platform 37 installed, or run:
 
 ```text
 ./gradlew :app:assembleDebug
 ```
 
-Install the resulting debug APK, then select **Microbes Live Wallpaper** from the system wallpaper picker.
+Install the resulting debug APK and launch **Microbes Live Wallpaper** from the app drawer. Open the cogwheel settings and tap **Set live wallpaper** to open the system wallpaper preview. The settings screen also links to this repository for updates.
 
 ## Rebuild notes
 
-The supplied reference APK was `Microbes-1.apk`, a 2017 package containing DEX 035 code and a single `armeabi` JNI library. It is not included in this repository because it is a binary reference, not the source implementation.
+The supplied reference APK is a 2017 package containing DEX 035 code and a single `armeabi` JNI library. It remains a behavioral and visual reference only; the rebuilt application does not package or load that library.
